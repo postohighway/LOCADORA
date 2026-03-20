@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Highway Locação — Veículos Elétricos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <h1>Highway</h1>
+        <span>Locação EV · HTML + JSON</span>
+      </div>
+
+      <div class="dep-toggle">
+        <small>Depreciação 4 anos · 15% residual (custo no resultado)</small>
+        <div class="toggle-row">
+          <button type="button" class="toggle" id="dep-toggle" aria-pressed="false">
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="toggle-label" id="dep-label">Oculta</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" data-page="dashboard" class="active"><span class="ico">📊</span> Dashboard</a>
+        <a href="#" data-page="veiculos"><span class="ico">🚗</span> Veículos</a>
+        <a href="#" data-page="clientes"><span class="ico">👤</span> Clientes</a>
+        <a href="#" data-page="motoristas"><span class="ico">🪪</span> Motoristas</a>
+        <a href="#" data-page="contratos"><span class="ico">📄</span> Contratos</a>
+        <a href="#" data-page="manutencoes"><span class="ico">🔧</span> Manutenções</a>
+        <a href="#" data-page="acidentes"><span class="ico">⚠️</span> Acidentes</a>
+        <a href="#" data-page="pagamentos"><span class="ico">💰</span> Pagamentos</a>
+        <a href="#" data-page="relatorios"><span class="ico">📈</span> Relatórios</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="btn-row">
+          <button type="button" class="btn-ghost" id="btn-export">💾 Exportar JSON</button>
+          <button type="button" class="btn-ghost" id="btn-import">📂 Importar JSON</button>
+          <button type="button" class="btn-ghost" id="btn-reset">↺ Restaurar exemplo</button>
+        </div>
+        <input type="file" id="file-import" accept=".json,application/json" hidden />
+      </div>
+    </aside>
+
+    <main class="main">
+      <section id="page-dashboard" class="page active">
+        <div class="page-head">
+          <div>
+            <h2>Dashboard</h2>
+            <p>Visão geral — dados salvos no navegador (localStorage)</p>
+          </div>
+        </div>
+        <div class="cards" id="dash-cards"></div>
+      </section>
+
+      <section id="page-veiculos" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Veículos</h2>
+            <p>Frota elétrica</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-veiculo">+ Novo veículo</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-veiculos">
+            <thead>
+              <tr>
+                <th>Placa</th>
+                <th>Marca / Modelo</th>
+                <th>Ano</th>
+                <th>Autonomia</th>
+                <th>Km</th>
+                <th>Status</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-clientes" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Clientes</h2>
+            <p>PF e PJ</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-cliente">+ Novo cliente</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-clientes">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>CPF/CNPJ</th>
+                <th>Contato</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-motoristas" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Motoristas</h2>
+            <p>Parceiros</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-motorista">+ Novo motorista</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-motoristas">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>CNH</th>
+                <th>Viagens</th>
+                <th>Índice acidentes</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-contratos" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Contratos</h2>
+            <p>Locações</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-contrato">+ Novo contrato</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-contratos">
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Cliente</th>
+                <th>Veículo</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-manutencoes" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Manutenções</h2>
+            <p>Preventivas e corretivas</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-nova-manut">+ Nova manutenção</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-manutencoes">
+            <thead>
+              <tr>
+                <th>Veículo</th>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Custo</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-acidentes" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Acidentes</h2>
+            <p>Ocorrências</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-acidente">+ Registrar</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-acidentes">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Veículo</th>
+                <th>Descrição</th>
+                <th>Custo</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-pagamentos" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Pagamentos</h2>
+            <p>Recebimentos</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-novo-pagamento">+ Novo pagamento</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="tbl-pagamentos">
+            <thead>
+              <tr>
+                <th>Contrato</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
+                <th>Status</th>
+                <th>—</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-relatorios" class="page">
+        <div class="page-head">
+          <div>
+            <h2>Relatórios</h2>
+            <p>Rentabilidade e DRE — respeitam o botão de depreciação</p>
+          </div>
+        </div>
+        <div class="tabs">
+          <button type="button" class="tab on" data-rel="rent">Rentabilidade por veículo</button>
+          <button type="button" class="tab" data-rel="dre">DRE (mês atual)</button>
+        </div>
+        <div id="rel-content"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal-overlay" style="display: none">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modal-title">Título</h3>
+        <button type="button" class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
